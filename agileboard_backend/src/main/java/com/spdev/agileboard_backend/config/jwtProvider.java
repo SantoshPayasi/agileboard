@@ -2,7 +2,6 @@ package com.spdev.agileboard_backend.config;
 
 import java.util.Date;
 import javax.crypto.SecretKey;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 

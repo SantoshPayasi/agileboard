@@ -17,13 +17,16 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Projects {
    
 
@@ -36,8 +39,8 @@ public class Projects {
     private String description;
     private String category;
 
-
-    private List<String>tags = new ArrayList<>();
+    @Default
+    private  List<String>  tags = new ArrayList<>();
 
     @JsonIgnore
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,9 +49,11 @@ public class Projects {
     @ManyToOne
     private User owner;
     
+    @Default
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Issue> issues = new ArrayList<>();
+    private  List<Issue> issues = new ArrayList<>();
     
+    @Default
     @ManyToMany
-    private List<User>team = new ArrayList<>();
+    private  List<User>team = new ArrayList<>();
 }

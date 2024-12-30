@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spdev.agileboard_backend.Implementations.CustomUserDetailsImpl;
 import com.spdev.agileboard_backend.config.jwtProvider;
 import com.spdev.agileboard_backend.modals.User;
 import com.spdev.agileboard_backend.repository.UserRepository;
 import com.spdev.agileboard_backend.response.AuthResponse;
-import com.spdev.agileboard_backend.services.CustomUserDetailsImpl;
 import com.spdev.agileboard_backend.types.LoginRequestDto;
 
 @RestController

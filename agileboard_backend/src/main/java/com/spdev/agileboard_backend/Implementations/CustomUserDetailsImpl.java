@@ -1,4 +1,4 @@
-package com.spdev.agileboard_backend.services;
+package com.spdev.agileboard_backend.Implementations;
 
 import java.util.ArrayList;
 import java.util.List;
