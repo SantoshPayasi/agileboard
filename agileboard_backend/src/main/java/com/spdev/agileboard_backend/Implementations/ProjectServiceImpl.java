@@ -47,7 +47,7 @@ public class ProjectServiceImpl implements ProjectService {
 
             Chat chat = new Chat();
 
-            chat.setProjects(createProject);
+            chat.setProject(createProject);
            
             Chat ProjectChat = chatService.createChat(chat);
 

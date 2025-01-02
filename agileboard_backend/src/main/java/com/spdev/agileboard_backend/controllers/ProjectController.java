@@ -1,6 +1,8 @@
 package com.spdev.agileboard_backend.controllers;
 
 import org.springframework.http.*;
+
+import com.spdev.agileboard_backend.Entity.InvitationRequest;
 import com.spdev.agileboard_backend.modals.*;
 import com.spdev.agileboard_backend.services.*;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -24,6 +29,9 @@ public class ProjectController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private InvitationService invitationService;
+
     @GetMapping
     public ResponseEntity<List<Projects>> getProjects(@RequestParam(required = false) String category,
             @RequestParam(required = false) String tag,
@@ -37,8 +45,8 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("${projectId}")
-    public ResponseEntity<Projects> getProjectById(@PathVariable Long projectId,
+    @GetMapping("/{projectId}")
+    public ResponseEntity<Projects> getProjectbyId(@PathVariable Long projectId,
             @RequestHeader("Authorization") String jwt) throws Exception {
         try {
             Projects projects = projectService.getProjectById(projectId);
@@ -88,8 +96,8 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/${keyword}")
-    public ResponseEntity<List<Projects>> searchProjects(
+    @GetMapping("/{keyword}")
+    public ResponseEntity<List<Projects>> searchprojects(
         @RequestParam String param,
         @RequestHeader("AUthorization") String jwt
         ) throws Exception {
@@ -108,6 +116,40 @@ public class ProjectController {
         try {
          Chat chat = projectService.getchatbyprojectid(projectId);
          return new ResponseEntity<>(chat, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+    
+
+    @GetMapping("/invite")
+    public ResponseEntity<MessageResponse> invitProject(
+        @RequestParam InvitationRequest invitationRequest,
+        @RequestHeader("AUthorization") String jwt
+        ) throws Exception {
+        try  {
+           User user = userService.findUserByjwt(jwt);
+          invitationService.SendInvitation(invitationRequest.getEmail(), invitationRequest.getProjectId());
+          MessageResponse response = new MessageResponse("Invitation sent Successfully");
+
+          return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+    
+
+    @PostMapping("/acceptInvitation")
+    public ResponseEntity<MessageResponse> postMethodName(@RequestParam String token, @RequestHeader("Authorization") String jwt) throws Exception {
+        try {
+            User user = userService.findUserByjwt(jwt);
+            Invitation invitation = invitationService.AcceptInvitation(token, user.getId());
+            if(invitation == null){
+                throw new Exception("Invalid Invitation");
+            }
+            projectService.addUserToProject(invitation.getProjectId(), user.getId());
+            MessageResponse response = new MessageResponse("Invitation accepted successfully Welcome to project");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

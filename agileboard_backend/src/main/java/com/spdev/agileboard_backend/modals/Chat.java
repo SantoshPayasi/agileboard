@@ -35,6 +35,6 @@ public class Chat {
     private List<User> users = new ArrayList<>();
 
     @OneToOne   //one chat have one project and visa versa
-    private Projects projects;
+    private Projects project;
 
 }
