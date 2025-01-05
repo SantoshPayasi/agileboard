@@ -1,14 +1,13 @@
 package com.spdev.agileboard_backend.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.spdev.agileboard_backend.Entity.IssuerequestEntity;
 import com.spdev.agileboard_backend.modals.Issue;
 import com.spdev.agileboard_backend.modals.User;
 
 public interface IssueService {
-   Optional<Issue> getIssueById(Long id) throws Exception;
+   Issue getIssueById(Long id) throws Exception;
 
    List<Issue> getIssueByProjectId(Long projectId) throws Exception;
 
@@ -16,9 +15,6 @@ public interface IssueService {
 
    void deleteIssue(Long issueId, Long userId) throws Exception;
 
-//    List<Issue> getIssueByAssigneeId(Long assigneeId) throws Exception;
-
-//    List<Issue> searchIssues(String title, String status, String priority, Long assigneeId) throws Exception;
    
   Issue addUserToIssue(Long issueId, Long userId) throws Exception;
 

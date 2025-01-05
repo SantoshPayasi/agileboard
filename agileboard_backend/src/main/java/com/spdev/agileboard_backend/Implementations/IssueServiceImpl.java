@@ -1,7 +1,6 @@
 package com.spdev.agileboard_backend.Implementations;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,14 +23,14 @@ public class IssueServiceImpl implements IssueService {
     @Autowired
     private ProjectService projectService;
 
-    // @Autowired
-    // private UserService userService;
+    @Autowired
+    private UserService userService;
 
     @Override
-    public Optional<Issue> getIssueById(Long id) throws Exception {
+    public Issue getIssueById(Long id) throws Exception {
         try {
-            Optional<Issue> issue = issueRepository.findById(id);
-            if (issue.isEmpty()) {
+            Issue issue = issueRepository.findById(id).orElse(null);
+            if (issue == null) {
                 throw new Exception("Issue Not Found");
             }
             return issue;
@@ -72,7 +71,6 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public void deleteIssue(Long issueId, Long userId) throws Exception {
         try {
-            // getIssueById(issueId);
             issueRepository.deleteById(issueId);
         } catch (Exception e) {
            throw new Exception(e.getMessage());
@@ -83,7 +81,11 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public Issue addUserToIssue(Long issueId, Long userId) throws Exception {
         try {
-           return null;
+            Issue issue = getIssueById(issueId);
+            User user = userService.findUserByUserID(userId);
+            issue.setAssignee(user);
+            Issue updatedissue = issueRepository.save(issue);
+            return updatedissue;
         } catch (Exception e) {
           throw new Exception(e.getMessage());
         }
@@ -92,7 +94,9 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public Issue updateStatus(Long issueId, String status) throws Exception {
        try {
-        return null;
+        Issue issue = getIssueById(issueId);
+        issue.setStatus(status);
+        return issueRepository.save(issue);
        } catch (Exception e) {
         throw new Exception(e.getMessage());
        }

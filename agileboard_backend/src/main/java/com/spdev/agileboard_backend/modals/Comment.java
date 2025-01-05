@@ -2,6 +2,8 @@ package com.spdev.agileboard_backend.modals;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -19,13 +21,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Comment {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String comment;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime upDateedAt;
     
     @ManyToOne
     private User user;

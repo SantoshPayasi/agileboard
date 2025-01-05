@@ -98,12 +98,12 @@ public class ProjectController {
 
     @GetMapping("/{keyword}")
     public ResponseEntity<List<Projects>> searchprojects(
-        @RequestParam String param,
+        @PathVariable String keyword,
         @RequestHeader("AUthorization") String jwt
         ) throws Exception {
         try  {
            User user =  userService.findUserByjwt(jwt);
-           List<Projects> projects = projectService.searchProjects(param, user);
+           List<Projects> projects = projectService.searchProjects(keyword, user);
            return new ResponseEntity<>(projects, HttpStatus.OK);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -112,7 +112,7 @@ public class ProjectController {
     
 
     @GetMapping("/{ProjectId}/chat")
-    public ResponseEntity<Chat> getChatByProjectId(@RequestParam(required = true) Long projectId) throws Exception {
+    public ResponseEntity<Chat> getChatByProjectId(@PathVariable(required = true) Long projectId) throws Exception {
         try {
          Chat chat = projectService.getchatbyprojectid(projectId);
          return new ResponseEntity<>(chat, HttpStatus.OK);
@@ -128,7 +128,6 @@ public class ProjectController {
         @RequestHeader("AUthorization") String jwt
         ) throws Exception {
         try  {
-           User user = userService.findUserByjwt(jwt);
           invitationService.SendInvitation(invitationRequest.getEmail(), invitationRequest.getProjectId());
           MessageResponse response = new MessageResponse("Invitation sent Successfully");
 
